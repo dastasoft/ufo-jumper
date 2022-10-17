@@ -10,9 +10,11 @@ var jump_speed = 1000
 var target = null
 var trail_length = 15
 
+
 func _unhandled_input(event):
 	if target and event is InputEventScreenTouch and event.pressed:
 		jump()
+
 
 func jump():
 	target.implode()
@@ -22,6 +24,7 @@ func jump():
 	if settings.enable_sound:
 		$Jump.play()
 
+
 func _on_Jumper_area_entered(area):
 	target = area
 	velocity = Vector2.ZERO
@@ -29,7 +32,8 @@ func _on_Jumper_area_entered(area):
 	
 	if settings.enable_sound:
 		$Capture.play()
-	
+
+
 func _physics_process(delta):
 	if trail.points.size() > trail_length:
 		trail.remove_point(0)
@@ -39,9 +43,18 @@ func _physics_process(delta):
 	else:
 		position += velocity * delta
 
+
 func die():
 	target = null
 	queue_free()
+
+
+func increase_jump_pitch(bonus = 1):
+	$Jump.pitch_scale = clamp(bonus / 10.0 + 0.9, 1.0, 3.0)
+
+
+func reset_jump_pitch():
+	$Jump.pitch_scale = 1.0
 
 
 func _on_VisibilityNotifier2D_screen_exited():

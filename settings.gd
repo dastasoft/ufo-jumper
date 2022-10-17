@@ -7,8 +7,10 @@ var enable_music = true
 
 var circles_per_level = 5
 
+
 func _ready():
 	load_settings()
+
 
 static func rand_weighted(weights):
 	var sum = 0
@@ -21,12 +23,14 @@ static func rand_weighted(weights):
 			return i
 		num -= weights[i]
 
+
 func save_settings():
 	var f = File.new()
 	f.open(settings_file, File.WRITE)
 	f.store_var(enable_sound)
 	f.store_var(enable_music)
 	f.close()
+
 
 func load_settings():
 	var f = File.new()

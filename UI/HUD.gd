@@ -2,25 +2,31 @@ extends CanvasLayer
 
 var _score = 0
 
+
 func _ready():
 	$Message.rect_pivot_offset = $Message.rect_size / 2
+
 
 func show_message(text):
 	$Message.text = text
 	$MessageAnimation.play("show_message")
 
+
 func hide():
 	$ScoreBox.hide()
 	$BonusBox.hide()
+
 
 func show():
 	$ScoreBox.show()
 	$BonusBox.show()
 
+
 func update_score(score, value):
 	$Tween.interpolate_property(self, "_score", score, value, 0.25, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Tween.start()
 	$ScoreAnimation.play("score")
+
 
 func update_bonus(value):
 	$BonusBox/Bonus.text = str(value) + "x"

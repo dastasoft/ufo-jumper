@@ -6,6 +6,7 @@ var level
 var last_circle_position
 var level_markers = []
 
+
 func _ready():
 	randomize()
 	last_circle_position = $Camera2D.position
@@ -16,7 +17,8 @@ func _ready():
 			level_markers.append(last_circle_position)
 		spawn_circle()
 	update()
-		
+
+
 func _process(delta):
 	if Input.is_action_pressed("ui_up"):
 		$Camera2D.position.y -= 15
@@ -27,6 +29,7 @@ func _process(delta):
 	if Input.is_action_pressed("ui_right"):
 		$Camera2D.position.x += 15
 
+
 func spawn_circle(_position=null):
 	var c = Circle.instance()
 	if !_position:
@@ -36,6 +39,7 @@ func spawn_circle(_position=null):
 	add_child(c)
 	c.init(_position, level)
 	last_circle_position = _position
+
 
 func _draw():
 	var l = 1

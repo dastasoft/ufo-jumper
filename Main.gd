@@ -11,24 +11,34 @@ var new_highscore = false
 var level = 0
 var bonus = 0 setget set_bonus
 
+
 func _ready():
 	randomize()
 	load_score()
 	$HUD.hide()
 
-func new_game():
+
+func initial_state():
 	new_highscore = false
 	self.score = 0
 	self.bonus = 0
 	num_circles = 0
 	level = 1
 	$Camera2D.position = $StartPosition.position
-	
+
+
+func spawn_player():
 	player = Jumper.instance()
 	player.position = $StartPosition.position
 	add_child(player)
 	player.connect("captured", self, "_on_Jumper_captured")
 	player.connect("died", self, "_on_Jumper_died")
+
+
+func new_game():
+	initial_state()
+	
+	spawn_player()
 	
 	spawn_circle($StartPosition.position)
 	
@@ -40,15 +50,19 @@ func new_game():
 		$Music.volume_db = 0
 		$Music.play()
 
+
 func spawn_circle(_position=null):
 	var c = Circle.instance()
+
 	if !_position:
 		var x = rand_range(-150, 150)
 		var y = rand_range(-500, -400)
 		_position = player.target.position + Vector2(x, y)
+
 	add_child(c)
 	c.connect("full_orbit", self, "set_bonus", [1])
 	c.init(_position, level)
+
 
 func _on_Jumper_captured(object):
 	$Camera2D.position = object.position
@@ -62,7 +76,8 @@ func _on_Jumper_captured(object):
 	if num_circles > 0 and num_circles % settings.circles_per_level == 0:
 		level += 1
 		$HUD.show_message("Level %s" % str(level))
-	
+
+
 func set_score(value):
 	$HUD.update_score(score, value)
 	score = value
@@ -70,8 +85,6 @@ func set_score(value):
 	if score > highscore and !new_highscore:
 		$HUD.show_message("New Record!")
 		new_highscore = true
-	
-	
 
 
 func _on_Jumper_died():
@@ -82,6 +95,7 @@ func _on_Jumper_died():
 	get_tree().call_group("circles", "implode")
 	$Screens.game_over(score, highscore)
 	$HUD.hide()
+	player = null
 	
 	if settings.enable_music:
 		fade_music()
@@ -108,3 +122,6 @@ func fade_music():
 func set_bonus(value):
 	bonus = value
 	$HUD.update_bonus(bonus)
+	if player:
+		player.increase_jump_pitch(bonus)
+

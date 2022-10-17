@@ -17,6 +17,7 @@ var current_orbits = 0
 var orbit_start = null
 var jumper = null
 
+
 func init(_position, level = 1):
 	var _mode = settings.rand_weighted([10, level-1])
 	set_mode(_mode)
@@ -32,16 +33,16 @@ func init(_position, level = 1):
 	if randf() < small_chance:
 		radius = max(50, radius - level * rand_range(0.75, 1.25))
 
-	var random_planet = randi() % 10
-	$Sprite.texture = load("res://assets/images/planets/planet0%s.png" % str(random_planet))
-	
+	$Sprite.texture = load("res://assets/images/planets/planet0%s.png" % str(randi() % 10))
 	$CollisionShape2D.shape = $CollisionShape2D.shape.duplicate()
 	$CollisionShape2D.shape.radius = radius
+
 	var img_size = $Sprite.texture.get_size().x / 2
 	$Sprite.scale = Vector2(1, 1) * radius / img_size
 	orbit_position.position.x = radius
 	rotation_speed *= pow(-1, randi() % 2)
 	set_tween()
+
 
 func set_mode(_mode):
 	mode = _mode
@@ -53,11 +54,13 @@ func set_mode(_mode):
 			$Label.text = str(num_orbits)
 			$Label.show()
 
+
 func _process(delta):
 	$Pivot.rotation += rotation_speed * delta
 	if jumper:
 		check_orbits()
 		update()
+
 
 func check_orbits():
 	if abs($Pivot.rotation - orbit_start) > 2 * PI:
@@ -75,11 +78,13 @@ func check_orbits():
 				implode()
 		orbit_start = $Pivot.rotation
 
+
 func implode():
 	jumper = null
 	$AnimationPlayer.play("implode")
 	yield($AnimationPlayer, "animation_finished")
 	queue_free()
+
 
 func capture(target):
 	current_orbits = 0
@@ -87,6 +92,7 @@ func capture(target):
 	$AnimationPlayer.play("capture")
 	$Pivot.rotation = (jumper.position - position).angle()
 	orbit_start = $Pivot.rotation
+
 
 func set_tween(object=null, key=null):
 	if move_range == 0:

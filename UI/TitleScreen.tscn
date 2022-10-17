@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://UI/BaseScreen.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/images/buttons/ButtonTextOriginal_0052_Package-----------------.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/images/buttons/ButtonTextPressed_0053_Package-----------------.png" type="Texture" id=6]
 [ext_resource path="res://assets/images/buttons/ButtonTextPressed_0048_Package-----------------.png" type="Texture" id=7]
 [ext_resource path="res://assets/images/ufo_jumper.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/godot_logo.png" type="Texture" id=9]
 
 [node name="TitleScreen" instance=ExtResource( 1 )]
 
@@ -48,3 +49,16 @@ margin_right = 308.0
 margin_bottom = 64.0
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." index="1"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -133.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" index="0"]
+margin_left = 51.0
+margin_right = 428.0
+margin_bottom = 133.0
+texture = ExtResource( 9 )
