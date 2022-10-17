@@ -9,6 +9,8 @@ var velocity = Vector2(100, 0)
 var jump_speed = 1000
 var target = null
 var trail_length = 15
+var min_jump_pitch = 1.0
+var max_jump_pitch = 3.0
 
 
 func _unhandled_input(event):
@@ -50,11 +52,7 @@ func die():
 
 
 func increase_jump_pitch(bonus = 1):
-	$Jump.pitch_scale = clamp(bonus / 10.0 + 0.9, 1.0, 3.0)
-
-
-func reset_jump_pitch():
-	$Jump.pitch_scale = 1.0
+	$Jump.pitch_scale = clamp(bonus / 10.0 + 0.9, min_jump_pitch, max_jump_pitch)
 
 
 func _on_VisibilityNotifier2D_screen_exited():
