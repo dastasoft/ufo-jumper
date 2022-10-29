@@ -105,6 +105,10 @@ func _on_Jumper_died():
 	$HUD.hide()
 	player = null
 	
+	if settings.enable_sound:
+		$DeathSound.play()
+		yield(death_stop(), "completed")
+
 	if settings.enable_music:
 		fade_music()
 
@@ -133,3 +137,7 @@ func set_bonus(value):
 	if player:
 		player.increase_jump_pitch(bonus)
 
+func death_stop():
+	get_tree().paused = true
+	yield(get_tree().create_timer(0.5), "timeout")
+	get_tree().paused = false

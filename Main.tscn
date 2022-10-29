@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://UI/Screens.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/audio/bgm_0.mp3" type="AudioStream" id=4]
 [ext_resource path="res://UI/Background.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/audio/dead.mp3" type="AudioStream" id=6]
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -25,6 +26,9 @@ smoothing_speed = 8.0
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
 
 [node name="Background" parent="." instance=ExtResource( 5 )]
 
