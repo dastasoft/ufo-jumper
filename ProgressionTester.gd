@@ -5,6 +5,8 @@ var font = preload("res://assets/fonts/kenney_future.tres")
 var level
 var last_circle_position
 var level_markers = []
+var is_first_planet = true
+var spawn_chance_ratio = 2
 
 
 func _ready():
@@ -12,6 +14,7 @@ func _ready():
 	last_circle_position = $Camera2D.position
 	level = 0
 	for i in 100:
+		is_first_planet = i == 0
 		if i % 5 == 0:
 			level += 1
 			level_markers.append(last_circle_position)
@@ -19,7 +22,7 @@ func _ready():
 	update()
 
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_pressed("ui_up"):
 		$Camera2D.position.y -= 15
 	if Input.is_action_pressed("ui_down"):
@@ -39,6 +42,11 @@ func spawn_circle(_position=null):
 	add_child(c)
 	c.init(_position, level)
 	last_circle_position = _position
+	
+	if !is_first_planet:
+		var spawn_chance = clamp(level-spawn_chance_ratio, 0, 9) / 10.0
+		if randf() < spawn_chance:
+			c.spawn_asteroid()
 
 
 func _draw():

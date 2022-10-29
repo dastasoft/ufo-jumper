@@ -11,6 +11,7 @@ var target = null
 var trail_length = 15
 var min_jump_pitch = 1.0
 var max_jump_pitch = 3.0
+var is_dead = false
 
 
 func _unhandled_input(event):
@@ -28,13 +29,19 @@ func jump():
 
 
 func _on_Jumper_area_entered(area):
-	target = area
-	velocity = Vector2.ZERO
-	emit_signal("captured", area)
-	
-	if settings.enable_sound:
-		$Capture.play()
+	if area.is_in_group("asteroids"):
+		emit_signal("died")
+		die()
+	elif !is_dead:
+		target = area
+		velocity = Vector2.ZERO
+		emit_signal("captured", area)
+		
+		if settings.enable_sound:
+			$Capture.play()
 
+func _ready():
+	is_dead = false
 
 func _physics_process(delta):
 	if trail.points.size() > trail_length:
@@ -47,6 +54,7 @@ func _physics_process(delta):
 
 
 func die():
+	is_dead = true
 	target = null
 	queue_free()
 
@@ -56,6 +64,6 @@ func increase_jump_pitch(bonus = 1):
 
 
 func _on_VisibilityNotifier2D_screen_exited():
-	if !target:
+	if !target and !is_dead:
 		emit_signal("died")
 		die()

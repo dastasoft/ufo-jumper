@@ -10,6 +10,8 @@ var highscore = 0
 var new_highscore = false
 var level = 0
 var bonus = 0 setget set_bonus
+var is_first_planet = true
+export var spawn_chance_ratio = 2
 
 
 func _ready():
@@ -20,6 +22,7 @@ func _ready():
 
 func initial_state():
 	new_highscore = false
+	is_first_planet = true
 	self.score = 0
 	self.bonus = 0
 	num_circles = 0
@@ -41,6 +44,7 @@ func new_game():
 	spawn_player()
 	
 	spawn_circle($StartPosition.position)
+	is_first_planet = false
 	
 	$HUD.update_score(score, 0)
 	$HUD.show()
@@ -62,6 +66,10 @@ func spawn_circle(_position=null):
 	add_child(c)
 	c.connect("full_orbit", self, "set_bonus", [1])
 	c.init(_position, level)
+	if !is_first_planet:
+		var spawn_chance = clamp(level - spawn_chance_ratio, 0, 9) / 10.0
+		if randf() < spawn_chance:
+			c.spawn_asteroid()
 
 
 func _on_Jumper_captured(object):
